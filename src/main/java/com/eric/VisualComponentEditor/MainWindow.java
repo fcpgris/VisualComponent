@@ -10,6 +10,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import com.mxgraph.view.mxGraph;
+
 
 public class MainWindow extends JFrame{
 	
@@ -20,25 +22,25 @@ public class MainWindow extends JFrame{
 	
 	private JTree visualComponentTree = null;
 	private JScrollPane leftPanel = null;
-	private CenterPanel centerPanel = null;
 	private JSplitPane splitPane = null;
 	
-	
+	private ContentJGraph contentPanel;
+	private mxGraph graph; // for contentPanel
 	
 	public MainWindow() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Visual Editor");
 		setSize(1200, 900);
 		
-		centerPanel = new CenterPanel();
-		centerPanel.setSize(800, 800);
-		centerPanel.setTransferHandler(new PanelTransferHandler());
+		graph = new mxGraph();
+		contentPanel = new ContentJGraph(graph);
+		contentPanel.setTransferHandler(new PanelTransferHandler());
 
 		// createTree
 		visualComponentTree = createTree();
 		leftPanel = new JScrollPane(visualComponentTree);
 		leftPanel.setMinimumSize(new Dimension(400, 800));
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, centerPanel);
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, contentPanel);
 		add(splitPane, BorderLayout.CENTER);
 	}
 
@@ -58,5 +60,4 @@ public class MainWindow extends JFrame{
 		tree.setTransferHandler(new TreeTransferHandler());
 		return tree;
 	}
-
 }
